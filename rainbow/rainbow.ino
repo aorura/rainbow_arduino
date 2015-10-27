@@ -3,7 +3,7 @@
 SoftwareSerial BTSerial(0, 1);  // RX, TX
 byte cmd[2];
 int CMD_SIZE = 2;
-int RED_IO = 10, GREEN_IO = 11, BLUE_IO = 12, YELLOW_IO = 13, WHITE_IO = 14;
+int RED_IO = 9, GREEN_IO = 10, BLUE_IO = 11, YELLOW_IO = 12, WHITE_IO = 13;
 
 void setup() {
   // put your setup code here, to run once:
@@ -30,6 +30,7 @@ void turnOffLeds()
   digitalWrite(BLUE_IO,LOW);
   digitalWrite(YELLOW_IO,LOW);
   digitalWrite(WHITE_IO, LOW);
+  delayMicroseconds(50);
 }
 
 void loop() {
