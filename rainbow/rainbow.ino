@@ -37,6 +37,8 @@ void loop() {
     BTSerial.readBytes(cmd, CMD_SIZE);
     if (cmd[0] == 0x16) {
       turnOffLeds();
+      // cmd[1] has a color of led.
+      // cmd[1] has 8 bits. The order is ...WYRGB
       if (cmd[1] & 0x01) { // Blue
           digitalWrite(BLUE_IO, HIGH);
       }
