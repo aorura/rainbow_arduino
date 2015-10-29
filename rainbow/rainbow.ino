@@ -23,6 +23,19 @@ void setup() {
 //  pinMode(BLUE_IO, OUTPUT);
 //  pinMode(YELLOW_IO, OUTPUT);
   pinMode(WHITE_IO, OUTPUT);
+
+  // FND Setting
+  pinMode(SECOND_DIGIT, OUTPUT);
+  pinMode(FIRST_DIGIT, OUTPUT);
+  pinMode(C_OR_F, OUTPUT);
+  pinMode(A, OUTPUT);
+  pinMode(B, OUTPUT);
+  pinMode(C, OUTPUT);
+  pinMode(D, OUTPUT);
+  pinMode(E, OUTPUT);
+  pinMode(F, OUTPUT);
+  pinMode(G, OUTPUT);
+  pinMode(DP, OUTPUT);
 }
 
 void turnOffLeds()
@@ -64,9 +77,18 @@ void loop() {
   }
 }
 
-void position(byte pos)
+void showTemp(int pos, char num)
 {
-  if (true) {
+  position(pos);
+//  turn(num);
+//  off();
+}
+
+//int SECOND_DIGIT = 9, FIRST_DIGIT = 12, C_OR_F = 8;
+//int A = 11, B = 7, C = 4, D = 2, E = 1, F = 10, G = 5, DP = 3;
+void position(int pos)
+{
+  if (pos == SECOND_DIGIT) {
     
   }
 }
