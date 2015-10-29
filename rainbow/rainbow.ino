@@ -80,8 +80,8 @@ void loop() {
 void showTemp(int pos, char num)
 {
   position(pos);
-//  turn(num);
-//  off();
+  showNum(num);
+  fndOff();
 }
 
 //int SECOND_DIGIT = 9, FIRST_DIGIT = 12, C_OR_F = 8;
@@ -89,7 +89,155 @@ void showTemp(int pos, char num)
 void position(int pos)
 {
   if (pos == SECOND_DIGIT) {
-    
+    digitalWrite(SECOND_DIGIT,  LOW);
+    digitalWrite(FIRST_DIGIT, HIGH);
+    digitalWrite(C_OR_F, HIGH);
+  } else if (pos == FIRST_DIGIT) {
+    digitalWrite(SECOND_DIGIT, HIGH);
+    digitalWrite(FIRST_DIGIT, LOW);
+    digitalWrite(C_OR_F, HIGH);
+  } else if (pos ==  C_OR_F) {
+    digitalWrite(SECOND_DIGIT, HIGH);
+    digitalWrite(FIRST_DIGIT, HIGH);
+    digitalWrite(C_OR_F, LOW);
   }
 }
+
+void fndOff()
+{
+  digitalWrite(A, LOW);
+  digitalWrite(B, LOW);
+  digitalWrite(C, LOW);
+  digitalWrite(D, LOW);
+  digitalWrite(E, LOW);
+  digitalWrite(F, LOW);
+  digitalWrite(G, LOW);
+  digitalWrite(DP, LOW);
+  delayMicroseconds(50);
+}
+
+void showNum(int num)
+{
+  if (num ==  0) {
+    digitalWrite(A, HIGH);
+    digitalWrite(B, HIGH);
+    digitalWrite(C, HIGH);
+    digitalWrite(D, HIGH);
+    digitalWrite(E, HIGH);
+    digitalWrite(F, HIGH);
+    digitalWrite(G, LOW);
+    digitalWrite(DP, LOW);
+    delay(1);
+  }  else if (num == 1) {
+    digitalWrite(A, LOW);
+    digitalWrite(B, LOW);
+    digitalWrite(C, LOW);
+    digitalWrite(D, LOW);
+    digitalWrite(E, HIGH);
+    digitalWrite(F, HIGH);
+    digitalWrite(G, LOW);
+    digitalWrite(DP, LOW);
+    delay(1);
+  }  else if (num == 2) {
+    digitalWrite(A, HIGH);
+    digitalWrite(B, HIGH);
+    digitalWrite(C, LOW);
+    digitalWrite(D, HIGH);
+    digitalWrite(E, HIGH);
+    digitalWrite(F, LOW);
+    digitalWrite(G, HIGH);
+    digitalWrite(DP, LOW);
+    delay(1);
+  }  else if (num == 3) {
+    digitalWrite(A, HIGH);
+    digitalWrite(B, LOW);
+    digitalWrite(C, LOW);
+    digitalWrite(D, HIGH);
+    digitalWrite(E, HIGH);
+    digitalWrite(F, HIGH);
+    digitalWrite(G, HIGH);
+    digitalWrite(DP, LOW);
+    delay(1);
+  }  else if (num == 4) {
+    digitalWrite(A, LOW);
+    digitalWrite(B, LOW);
+    digitalWrite(C, HIGH);
+    digitalWrite(D, LOW);
+    digitalWrite(E, HIGH);
+    digitalWrite(F, HIGH);
+    digitalWrite(G, HIGH);
+    digitalWrite(DP, LOW);
+    delay(1);
+  }  else if (num == 5) {
+    digitalWrite(A, HIGH);
+    digitalWrite(B, LOW);
+    digitalWrite(C, HIGH);
+    digitalWrite(D, HIGH);
+    digitalWrite(E, LOW);
+    digitalWrite(F, HIGH);
+    digitalWrite(G, HIGH);
+    digitalWrite(DP, LOW);
+    delay(1);
+  }  else if (num == 6) {
+    digitalWrite(A, HIGH);
+    digitalWrite(B, HIGH);
+    digitalWrite(C, HIGH);
+    digitalWrite(D, HIGH);
+    digitalWrite(E, LOW);
+    digitalWrite(F, HIGH);
+    digitalWrite(G, HIGH);
+    digitalWrite(DP, LOW);
+    delay(1);
+  }  else if (num == 7) {
+    digitalWrite(A, LOW);
+    digitalWrite(B, LOW);
+    digitalWrite(C, LOW);
+    digitalWrite(D, HIGH);
+    digitalWrite(E, HIGH);
+    digitalWrite(F, HIGH);
+    digitalWrite(G, LOW);
+    digitalWrite(DP, LOW);
+    delay(1);
+  }  else if (num == 8) {
+    digitalWrite(A, HIGH);
+    digitalWrite(B, HIGH);
+    digitalWrite(C, HIGH);
+    digitalWrite(D, HIGH);
+    digitalWrite(E, HIGH);
+    digitalWrite(F, HIGH);
+    digitalWrite(G, HIGH);
+    digitalWrite(DP, LOW);
+    delay(1);
+  }  else if (num == 9) {
+    digitalWrite(A, LOW);
+    digitalWrite(B, LOW);
+    digitalWrite(C, HIGH);
+    digitalWrite(D, HIGH);
+    digitalWrite(E, HIGH);
+    digitalWrite(F, HIGH);
+    digitalWrite(G, HIGH);
+    digitalWrite(DP, LOW);
+    delay(1);
+  }  else if (num == 10) {  // Celsius
+    digitalWrite(A, HIGH);
+    digitalWrite(B, HIGH);
+    digitalWrite(C, HIGH);
+    digitalWrite(D, HIGH);
+    digitalWrite(E, LOW);
+    digitalWrite(F, LOW);
+    digitalWrite(G, LOW);
+    digitalWrite(DP, HIGH);
+    delay(1);
+  }  else if (num == 11) {  // Fahrenheit
+    digitalWrite(A, LOW);
+    digitalWrite(B, HIGH);
+    digitalWrite(C, HIGH);
+    digitalWrite(D, HIGH);
+    digitalWrite(E, LOW);
+    digitalWrite(F, LOW);
+    digitalWrite(G, HIGH);
+    digitalWrite(DP, HIGH);
+    delay(1);
+  }
+}  
 
