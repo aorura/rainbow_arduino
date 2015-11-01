@@ -1,11 +1,14 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial BTSerial(0, 1);  // RX, TX
-byte cmd[2];
-int CMD_SIZE = 2;
-int RED_IO = 9, GREEN_IO = 10, BLUE_IO = 11, YELLOW_IO = 12, WHITE_IO = 13;
-int SECOND_DIGIT = 9, FIRST_DIGIT = 12, C_OR_F = 8;
-int A = 11, B = 7, C = 4, D = 2, E = 1, F = 10, G = 5, DP = 3;
+int CMD_SIZE = 6;
+byte cmd[6];
+int RED_IO = 9, GREEN_IO = 10, BLUE_IO = 11, YELLOW_IO = 13, WHITE_IO = 12;
+int SECOND_DIGIT = 8, FIRST_DIGIT = 9, C_OR_F = 12;
+int postions[3] = {SECOND_DIGIT, FIRST_DIGIT, C_OR_F}, DIGIT_NUM = 3;
+int A = 11, B = 7, C = 5, D = 3, E = 2, F = 10, G = 6, DP = 4;
+int DELAY = 50;
+int CELSIUS = 10, FAHRENHEIT = 11;
 
 void setup() {
   // put your setup code here, to run once:
@@ -13,10 +16,13 @@ void setup() {
   while (!Serial) {
     ;
   }
-  Serial.println("Good Morning.");
+  Serial.println("setup..");
 
   BTSerial.begin(115200);
-  BTSerial.println("Hello, World!");
+  while (!BTSerial) {
+    Serial.println("BTSerial");
+  }
+  //BTSerial.println("Hello, World!");
 
 //  pinMode(RED_IO, OUTPUT);
 //  pinMode(GREEN_IO, OUTPUT);
@@ -49,13 +55,22 @@ void turnOffLeds()
 }
 
 void loop() {
+  //Serial.println("loop..");
   if (BTSerial.available()) {
     BTSerial.readBytes(cmd, CMD_SIZE);
-    if (cmd[0] == 0x16) {
+
+    Serial.print((char) (cmd[0] + 0x30));
+    Serial.print((char) (cmd[1] + 0x30));
+    Serial.print((char) (cmd[2] + 0x30));
+    Serial.print((char) (cmd[3] + 0x30));
+    Serial.println((char) (cmd[4] + 0x30));
+    Serial.println((char) (cmd[5] + 0x30));
+
+    if (cmd[0] == 0x08) {
       turnOffLeds();
       // cmd[1] has a color of led.
       // cmd[1] has 8 bits. The order is ...WYRGB
-/*      if (cmd[1] & 0x01) { // Blue
+      /*if (cmd[1] & 0x01) { // Blue
           digitalWrite(BLUE_IO, HIGH);
       }
       if (cmd[1] & 0x02)  { // Green
@@ -63,25 +78,37 @@ void loop() {
       }
       if (cmd[1] & 0x04) {  // Red
           digitalWrite(RED_IO, HIGH);
-      }
-      if (cmd[1] & 0x08) { // Yellow
-          digitalWrite(YELLOW_IO, HIGH);
       }*/
-      if (cmd[1] & 0x10) {  // white
-          digitalWrite(WHITE_IO, HIGH);
-      } 
-    }
+      if (cmd[1] & 0x01) { // Yellow 0x08
+          digitalWrite(YELLOW_IO, HIGH);
+      }
+      /*if (cmd[1] & 0x10) {  // white 0x10
+        digitalWrite(WHITE_IO, HIGH);
+      }*/
+
+      while (!BTSerial.available()) {
+        if (cmd[2] == 0x04) {
+          showTemp(C_OR_F, CELSIUS);
+          showTemp(SECOND_DIGIT, cmd[3]);
+          showTemp(FIRST_DIGIT, cmd[4]);
+        } else if (cmd[2] == 0x02) {
+          showTemp(C_OR_F, FAHRENHEIT);
+          showTemp(SECOND_DIGIT, cmd[3]);
+          showTemp(FIRST_DIGIT, cmd[4]);
+        }        
+      }
+    } 
   }
-  if (Serial.available()) {
-    BTSerial.write(Serial.read());
-  }
+//  if (Serial.available()) {
+//    BTSerial.write(Serial.read());
+//  }
 }
 
 void showTemp(int pos, char num)
 {
+  fndOff();
   position(pos);
   showNum(num);
-  fndOff();
 }
 
 //int SECOND_DIGIT = 9, FIRST_DIGIT = 12, C_OR_F = 8;
@@ -113,7 +140,7 @@ void fndOff()
   digitalWrite(F, LOW);
   digitalWrite(G, LOW);
   digitalWrite(DP, LOW);
-  delayMicroseconds(50);
+//  delayMicroseconds(DELAY);
 }
 
 void showNum(int num)
@@ -127,7 +154,7 @@ void showNum(int num)
     digitalWrite(F, HIGH);
     digitalWrite(G, LOW);
     digitalWrite(DP, LOW);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 1) {
     digitalWrite(A, LOW);
     digitalWrite(B, LOW);
@@ -137,7 +164,7 @@ void showNum(int num)
     digitalWrite(F, HIGH);
     digitalWrite(G, LOW);
     digitalWrite(DP, LOW);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 2) {
     digitalWrite(A, HIGH);
     digitalWrite(B, HIGH);
@@ -147,7 +174,7 @@ void showNum(int num)
     digitalWrite(F, LOW);
     digitalWrite(G, HIGH);
     digitalWrite(DP, LOW);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 3) {
     digitalWrite(A, HIGH);
     digitalWrite(B, LOW);
@@ -157,7 +184,7 @@ void showNum(int num)
     digitalWrite(F, HIGH);
     digitalWrite(G, HIGH);
     digitalWrite(DP, LOW);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 4) {
     digitalWrite(A, LOW);
     digitalWrite(B, LOW);
@@ -167,7 +194,7 @@ void showNum(int num)
     digitalWrite(F, HIGH);
     digitalWrite(G, HIGH);
     digitalWrite(DP, LOW);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 5) {
     digitalWrite(A, HIGH);
     digitalWrite(B, LOW);
@@ -177,7 +204,7 @@ void showNum(int num)
     digitalWrite(F, HIGH);
     digitalWrite(G, HIGH);
     digitalWrite(DP, LOW);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 6) {
     digitalWrite(A, HIGH);
     digitalWrite(B, HIGH);
@@ -187,7 +214,7 @@ void showNum(int num)
     digitalWrite(F, HIGH);
     digitalWrite(G, HIGH);
     digitalWrite(DP, LOW);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 7) {
     digitalWrite(A, LOW);
     digitalWrite(B, LOW);
@@ -197,7 +224,7 @@ void showNum(int num)
     digitalWrite(F, HIGH);
     digitalWrite(G, LOW);
     digitalWrite(DP, LOW);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 8) {
     digitalWrite(A, HIGH);
     digitalWrite(B, HIGH);
@@ -207,7 +234,7 @@ void showNum(int num)
     digitalWrite(F, HIGH);
     digitalWrite(G, HIGH);
     digitalWrite(DP, LOW);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 9) {
     digitalWrite(A, LOW);
     digitalWrite(B, LOW);
@@ -217,7 +244,7 @@ void showNum(int num)
     digitalWrite(F, HIGH);
     digitalWrite(G, HIGH);
     digitalWrite(DP, LOW);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 10) {  // Celsius
     digitalWrite(A, HIGH);
     digitalWrite(B, HIGH);
@@ -227,7 +254,7 @@ void showNum(int num)
     digitalWrite(F, LOW);
     digitalWrite(G, LOW);
     digitalWrite(DP, HIGH);
-    delay(1);
+    delayMicroseconds(DELAY);
   }  else if (num == 11) {  // Fahrenheit
     digitalWrite(A, LOW);
     digitalWrite(B, HIGH);
@@ -237,7 +264,7 @@ void showNum(int num)
     digitalWrite(F, LOW);
     digitalWrite(G, HIGH);
     digitalWrite(DP, HIGH);
-    delay(1);
+    delayMicroseconds(DELAY);
   }
 }  
 
